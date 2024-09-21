@@ -11,7 +11,7 @@ import {
 import { EncoderOptionsBuilder, EncoderOptionsBuilderParams } from '@peertube/peertube-models'
 import { FfprobeData } from 'fluent-ffmpeg'
 
-const defaultX264VODOptionsBuilder: EncoderOptionsBuilder = (options: EncoderOptionsBuilderParams) => {
+const defaultVP9VODOptionsBuilder: EncoderOptionsBuilder = (options: EncoderOptionsBuilderParams) => {
   const { fps, inputRatio, inputBitrate, resolution } = options
 
   const targetBitrate = getTargetBitrate({ inputBitrate, ratio: inputRatio, fps, resolution })
@@ -25,7 +25,7 @@ const defaultX264VODOptionsBuilder: EncoderOptionsBuilder = (options: EncoderOpt
   }
 }
 
-const defaultX264LiveOptionsBuilder: EncoderOptionsBuilder = (options: EncoderOptionsBuilderParams) => {
+const defaultVP9LiveOptionsBuilder: EncoderOptionsBuilder = (options: EncoderOptionsBuilderParams) => {
   const { streamNum, fps, inputBitrate, inputRatio, resolution } = options
 
   const targetBitrate = getTargetBitrate({ inputBitrate, ratio: inputRatio, fps, resolution })
@@ -71,8 +71,8 @@ const defaultLibFDKAACVODOptionsBuilder: EncoderOptionsBuilder = ({ streamNum })
 export function getDefaultAvailableEncoders () {
   return {
     vod: {
-      libx264: {
-        default: defaultX264VODOptionsBuilder
+      "libvpx-vp9": {
+        default: defaultVP9VODOptionsBuilder
       },
       aac: {
         default: defaultAACOptionsBuilder
@@ -82,8 +82,8 @@ export function getDefaultAvailableEncoders () {
       }
     },
     live: {
-      libx264: {
-        default: defaultX264LiveOptionsBuilder
+      "libvpx-vp9": {
+        default: defaultVP9LiveOptionsBuilder
       },
       aac: {
         default: defaultAACOptionsBuilder
@@ -95,12 +95,12 @@ export function getDefaultAvailableEncoders () {
 export function getDefaultEncodersToTry () {
   return {
     vod: {
-      video: [ 'libx264' ],
+      video: [ 'libvpx-vp9' ],
       audio: [ 'libfdk_aac', 'aac' ]
     },
 
     live: {
-      video: [ 'libx264' ],
+      video: [ 'libvpx-vp9' ],
       audio: [ 'libfdk_aac', 'aac' ]
     }
   }
@@ -137,7 +137,7 @@ export async function canDoQuickVideoTranscode (path: string, maxFPS: number, pr
 
   // check video params
   if (!videoStream) return false
-  if (videoStream['codec_name'] !== 'h264') return false
+  if (videoStream['codec_name'] !== 'vp9') return false
   if (videoStream['pix_fmt'] !== 'yuv420p') return false
   if (fps < 2 || fps > maxFPS) return false
   if (bitRate > getMaxTheoreticalBitrate({ ...resolutionData, fps })) return false
@@ -173,8 +173,7 @@ function capBitrate (inputBitrate: number, targetBitrate: number) {
 function getCommonOutputOptions (targetBitrate: number, streamNum?: number) {
   return [
     `-preset veryfast`,
-    `${buildStreamSuffix('-maxrate:v', streamNum)} ${targetBitrate}`,
-    `${buildStreamSuffix('-bufsize:v', streamNum)} ${targetBitrate * 2}`,
+    '-crf 26',
 
     // NOTE: b-strategy 1 - heuristic algorithm, 16 is optimal B-frames for it
     `-b_strategy 1`,

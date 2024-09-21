@@ -289,7 +289,7 @@ describe('Test transcoding plugins', function () {
           expect(audioProbe.audioStream.codec_name).to.equal('opus')
         } else if (await hasVideoStream(playlistUrl)) {
           const videoProbe = await getVideoStream(playlistUrl)
-          expect(videoProbe.codec_name).to.equal('h264')
+          expect(videoProbe.codec_name).to.equal('vp9')
         }
       }
     })

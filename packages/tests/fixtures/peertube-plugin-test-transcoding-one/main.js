@@ -11,7 +11,7 @@ async function register ({ transcodingManager }) {
         }
       }
 
-      transcodingManager.addVODProfile('libx264', 'low-vod', builder)
+      transcodingManager.addVODProfile('libvpx-vp9', 'low-vod', builder)
     }
 
     {
@@ -23,7 +23,7 @@ async function register ({ transcodingManager }) {
         }
       }
 
-      transcodingManager.addLiveProfile('libx264', 'high-live', builder)
+      transcodingManager.addLiveProfile('libvpx-vp9', 'high-live', builder)
     }
   }
 
@@ -38,7 +38,7 @@ async function register ({ transcodingManager }) {
         }
       }
 
-      transcodingManager.addVODProfile('libx264', 'input-options-vod', builder)
+      transcodingManager.addVODProfile('libvpx-vp9', 'input-options-vod', builder)
     }
 
     {
@@ -50,7 +50,7 @@ async function register ({ transcodingManager }) {
         }
       }
 
-      transcodingManager.addLiveProfile('libx264', 'input-options-live', builder)
+      transcodingManager.addLiveProfile('libvpx-vp9', 'input-options-live', builder)
     }
   }
 
@@ -65,7 +65,7 @@ async function register ({ transcodingManager }) {
         }
       }
 
-      transcodingManager.addVODProfile('libx264', 'bad-scale-vod', builder)
+      transcodingManager.addVODProfile('libvpx-vp9', 'bad-scale-vod', builder)
     }
 
     {
@@ -77,7 +77,7 @@ async function register ({ transcodingManager }) {
         }
       }
 
-      transcodingManager.addLiveProfile('libx264', 'bad-scale-live', builder)
+      transcodingManager.addLiveProfile('libvpx-vp9', 'bad-scale-live', builder)
     }
   }
 }

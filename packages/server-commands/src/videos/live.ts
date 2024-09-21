@@ -22,9 +22,8 @@ export function sendRTMPStream (options: {
   if (copyCodecs) {
     command.outputOption('-c copy')
   } else {
-    command.outputOption('-c:v libx264')
+    command.outputOption('-c:v libvpx-vp9')
     command.outputOption('-g 120')
-    command.outputOption('-x264-params "no-scenecut=1"')
     command.outputOption('-r 60')
   }
 

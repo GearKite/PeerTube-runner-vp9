@@ -13,14 +13,14 @@ export function addDefaultEncoderGlobalParams (command: FfmpegCommand) {
 
 export function addDefaultEncoderParams (options: {
   command: FfmpegCommand
-  encoder: 'libx264' | string
+  encoder: 'libvpx-vp9' | string
   fps: number
 
   streamNum?: number
 }) {
   const { command, encoder, fps, streamNum } = options
 
-  if (encoder === 'libx264') {
+  if (encoder === 'libvpx-vp9') {
     if (fps) {
       // Keyframe interval of 2 seconds for faster seeking and resolution switching.
       // https://streaminglearningcenter.com/blogs/whats-the-right-keyframe-interval.html
